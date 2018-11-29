@@ -10,20 +10,20 @@ If you want to see the final product in action, clone down this repository, run 
 
 Setting this up from scratch was fairly trivial. I started out by boostapping with `create-react-app`
 
-```
+```bash
 create-react-app fun-with-git-hooks
 cd fun-with-git-hooks
 ```
 
 Next, I installed [husky](https://github.com/typicode/husky), which claims to be "git hooks made easy." (Accurate!). Since it's only necessary in the dev environment, only install it as a dev dependency.
 
-```
+```bash
 npm install husky --save-dev
 ```
 
 We actually end up needing one additional dev dependency called `cross-env`, which will allow us to configure a CI environment variable in whatever environment we're currently in.
 
-```
+```bash
 npm install cross-env --save-dev
 ```
 
@@ -33,20 +33,20 @@ Finally, let's make some modifications to our `package.json` file to accomplish 
 - Add a linting command (we didn't have to install `eslint` seperately as it bootstraps with `create-react-app`)
 - Configure our `husky` hooks to first lint and then test
 
-```
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "cross-env CI=true react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
-    "lint": "eslint src"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint && npm test",
-      "pre-push": "npm run lint && npm test"
-    }
+```json
+"scripts": {
+  "start": "react-scripts start",
+  "build": "react-scripts build",
+  "test": "cross-env CI=true react-scripts test --env=jsdom",
+  "eject": "react-scripts eject",
+  "lint": "eslint src"
+},
+"husky": {
+  "hooks": {
+    "pre-commit": "npm run lint && npm test",
+    "pre-push": "npm run lint && npm test"
   }
+}
 ```
 
 And that's it! Now, whenever you try to commit or push your code, you will be prevented from doing so if linting or testing fails. Quality for the win!
